@@ -1,14 +1,22 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { Row, Col, Image, ListGroup, Button, Card } from 'react-bootstrap'
 import Rating from '../components/Rating'
-import products from '../products'
+
+import axios from 'axios'
 
 
 
 function ProductScreen() {
     const {id} = useParams()
-    const product = products[Number(id)]
+    const [product, setProduct] = useState({})
+    useEffect(() => {
+        async function getProduct(){
+            const {data} = await axios.get(`/api/product/${id}/`)
+            setProduct(data)
+        }
+        getProduct()
+    }, [])
   return (
     <div>
         <Link to="/" className='btn btn-light my-3'>Go Back</Link>
