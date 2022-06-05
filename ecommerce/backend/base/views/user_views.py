@@ -60,3 +60,23 @@ def get_users(request):
     users = User.objects.all()
     serializers = UserSerializer(users, many=True)
     return Response(serializers.data)
+
+
+@api_view(["PUT"])
+@permission_classes([IsAuthenticated])
+def update_user(request):
+    user = request.user
+    serializer = UserSerializerWithToken(user, many=False)
+
+    data = request.data
+    user.first_name = data["name"]
+    user.email = data["email"]
+    user.username = data["email"]
+
+    if user.password != "":
+        user.password = make_password(data["password"])
+
+
+    user.save()
+    
+    return Response(serializer.data)
