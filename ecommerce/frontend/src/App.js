@@ -11,6 +11,7 @@ import ProfileScreen from './Screen/ProfileScreen';
 import ShippingScreen from './Screen/ShippingScreen';
 import PaymentScreen from './Screen/PaymentScreen';
 import PlaceOrderScreen from './Screen/PlaceOrderScreen';
+import OrderScreen from './Screen/OrderScreen';
 
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
               <Route path="shipping/" element={<ShippingScreen />} />
               <Route path="payment/" element={<PaymentScreen />} />
               <Route path="placeorder/" element={<PlaceOrderScreen />} />
+              <Route path="order/:id/" element={<OrderScreen />} />
             </Routes>
           </Container>
         </main>

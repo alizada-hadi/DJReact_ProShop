@@ -19,6 +19,8 @@ import {
     USER_UPDATE_RESET
  } from '../constants/userConstants'
 
+ import { MY_ORDER_LIST_RESET } from '../constants/orderConstants'
+
  import axios from 'axios'
  
 
@@ -64,6 +66,8 @@ import {
      dispatch({
          type : USER_DETAILS_REQUEST
      })
+
+     dispatch({type : MY_ORDER_LIST_RESET})
  }
 
 
