@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Navbar, Nav, Container, Row, NavDropdown } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
@@ -12,6 +12,11 @@ function Header() {
   const logoutHandler = () => {
     dispatch(logout())
   }
+
+  useEffect(() => {
+
+  }, [])
+
   return (
     <header>
         <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect>
@@ -48,6 +53,20 @@ function Header() {
             </LinkContainer>
             )
             }
+
+            {userInfo && userInfo.isAdmin && (
+              <NavDropdown title="Admin" id="admin">
+              <LinkContainer to="/admin/users">
+                <NavDropdown.Item>Users</NavDropdown.Item>
+              </LinkContainer>
+              <LinkContainer to="/admin/products">
+                <NavDropdown.Item>Products</NavDropdown.Item>
+              </LinkContainer>
+              <LinkContainer to="/admin/orders">
+                <NavDropdown.Item>Orders</NavDropdown.Item>
+              </LinkContainer>
+            </NavDropdown>
+            )}
         </Nav>
         </Navbar.Collapse>
   </Container>

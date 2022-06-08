@@ -35,7 +35,7 @@ function ProfileScreen() {
         if(!userInfo){
             navigate("/login")
         }else{
-            if(!user || !user.name){
+            if(!user || !user.name || userInfo._id !== user._id){
               dispatch({type : USER_UPDATE_RESET})
                 dispatch(userDetail('profile'))
                 dispatch(ordersMine())
@@ -134,6 +134,7 @@ function ProfileScreen() {
                       <th></th>
                     </tr>
                   </thead>
+                  {orders.length === 0 && (<Message message="You haven't ordered any item " variant="info" />)}
                   <tbody>
                     {
                       orders.map(order => (
