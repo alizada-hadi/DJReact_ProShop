@@ -18,6 +18,8 @@ function ProductListScreen() {
     const [brand, setBrand] = useState("")
     const [category, setCategory] = useState("")
     const [price, setPrice] = useState(0)
+    const [qty, setQty] = useState(1)
+    // const [image, setImage] = useState("")
     const [description, setDescription] = useState("")
 
     // 
@@ -54,12 +56,14 @@ function ProductListScreen() {
 
     const submitHandler = e => {
         e.preventDefault()
-        dispatch(createNewProduct(name, brand, category, price, description))
+        dispatch(createNewProduct(name, brand, category, price, description, qty))
         setShowModal(false)
         setName('')
         setBrand('')
         setCategory('')
         setPrice(0)
+        setQty(1)
+        // setImage("")
         setDescription('')
     }
   return (
@@ -112,6 +116,17 @@ function ProductListScreen() {
                                 placeholder="Enter product price"
                                 value={price}
                                 onChange={(e) => setPrice(e.target.value)}
+                                ></Form.Control>
+                            </Form.Group>
+
+                            <Form.Group controlId="price">
+                                <Form.Label>Product Quantity</Form.Label>
+                                <Form.Control
+                                required
+                                type='number'
+                                placeholder="Enter product quantity"
+                                value={qty}
+                                onChange={(e) => setQty(e.target.value)}
                                 ></Form.Control>
                             </Form.Group>
 

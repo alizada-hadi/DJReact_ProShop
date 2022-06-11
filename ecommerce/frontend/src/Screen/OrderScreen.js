@@ -15,6 +15,8 @@ function OrderScreen() {
     const dispatch = useDispatch()
     const orderDetails = useSelector(state => state.orderDetails)
     const {order, error, loading} = orderDetails
+    const userLogin = useSelector(state => state.userLogin)
+    const {userInfo} = userLogin
     if(!loading && !error){
         order.itemPrice = order.orderItems.reduce((acc, item) => acc + item.price * item.qty, 0).toFixed(2)
     }
@@ -28,6 +30,8 @@ function OrderScreen() {
     const paymentHandler = () => {
         dispatch(payOrder(orderId))
     }
+
+    const handleDeliver = () => {}
 
   return loading ? (
       <Loader />
@@ -146,15 +150,13 @@ function OrderScreen() {
                         </ListGroup.Item>
 
                         {
-                            !order.isPaid && (
+                            userInfo && userInfo.isAdmin && order.isPaid && order.isDelivered && (
                                 <ListGroup.Item>
                                     <Button
-                                    onClick={paymentHandler}
-                                    type="button" 
-                                    className='btn-block' 
-                                    variant='primary'>
-                                        Pay
-                                    </Button>
+                                    type="button"
+                                    className='btn btn-block'
+                                    onClick={handleDeliver}
+                                    >Mark as derlivered</Button>
                                 </ListGroup.Item>
                             )
                         }

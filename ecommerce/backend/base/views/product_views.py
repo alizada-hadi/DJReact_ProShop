@@ -29,12 +29,15 @@ def create_product_view(request):
     user = request.user
     data = request.data
 
+    print(data)
+
     product = Product.objects.create(
         user=user, 
         name = data["name"], 
         brand = data["brand"], 
         category =data["category"], 
         price = data["price"], 
+        countInStock = data["qty"],
         description = data["description"]
     )
 
@@ -51,3 +54,55 @@ def delete_product_view(request, pk):
     return Response({"detail" : "Product deleted successfully "}, status=status.HTTP_200_OK)
 
 
+
+@api_view(["PUT"])
+@permission_classes([IsAdminUser])
+def product_update_view(request, pk):
+    product = Product.objects.get(_id=pk)
+    user = request.user
+    data = request.data
+
+    product.user = user
+    product.name = data["name"]
+    product.brand = data["brand"]
+    product.category = data["category"]
+    product.countInStock = data["countInStock"]
+    product.price = data["price"]
+    product.description = data["description"]
+
+    product.save()
+
+    return Response({"detail" : "Product updated successfully "}, status=status.HTTP_200_OK)
+
+
+@api_view(["POST"])
+def upload_image_view(request):
+
+    data = request.data
+    product_id = data["product_id"]
+    product = Product.objects.get(_id=product_id)
+
+    product.image = request.FILES.get("image")
+
+    product.save()
+
+    return Response({"detail" : "Image uploaded successfully  "}, status=status.HTTP_200_OK)
+
+
+
+
+def create_product_review_view(request, pk):
+    user = request.user
+    product = Product.objects.get(_id=pk)   
+    data = request.data
+
+    alreadyExists = product.review_set.filter(user=user).exists()
+    if alreadyExists:
+        message = {
+            "details" : "You already have reviewed this product "
+        }
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+    
+    elif data["rating"] == 0:
+        message = {"details" : "Please select a rating"}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
