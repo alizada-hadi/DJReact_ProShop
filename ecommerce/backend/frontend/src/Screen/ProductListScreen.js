@@ -1,10 +1,11 @@
 import React, {useState, useEffect, Fragment} from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { LinkContainer } from 'react-router-bootstrap'
 import { Form, Button, Table, Row, Col, Modal } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
+import Paginate from '../components/Paginate'
 import FormContainer from '../components/FormContainer'
 import { listProducts, product_delete, createNewProduct } from '../actions/productActions'
 
@@ -24,24 +25,26 @@ function ProductListScreen() {
 
     // 
     const dispatch = useDispatch()
+    const location = useLocation()
     const productList = useSelector(state => state.productList)
     const productDelete = useSelector(state => state.productDelete)
     const productCreate = useSelector(state => state.productCreate)
-    const {loading, error, products} = productList
+    const {loading, error, products, page, pages} = productList
     const {loading:deleteProduct, error:productError, success:productSuccess} = productDelete
     const {loading:createProductLoading, error:createProductError, product:newProduct } = productCreate
     const navigate = useNavigate()
     const userLogin = useSelector(state => state.userLogin)
     const {userInfo} = userLogin
 
+    const keyword = location.search
 
     useEffect(()=> {
         if(userInfo && userInfo.isAdmin){
-            dispatch(listProducts())
+            dispatch(listProducts(keyword))
         }else{
             navigate("/login")
         }
-    }, [dispatch, navigate, userInfo, productSuccess, newProduct])
+    }, [dispatch, navigate, userInfo, productSuccess, newProduct, keyword])
 
     const deleteUserHandler = id => {
         if(window.confirm("Are you sure you want to delete this product? ")){
@@ -162,7 +165,8 @@ function ProductListScreen() {
                 <Message message={error} variant="danger" />
             ):
             (
-                <Table striped hover responsive className='table-sm'>
+                <div>
+                    <Table striped hover responsive className='table-sm'>
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -198,6 +202,9 @@ function ProductListScreen() {
                         ))}
                     </tbody>
                 </Table>
+                <Paginate page={page} pages={pages} isAdmin={true} />
+                </div>
+
             )
         }
     </Fragment>

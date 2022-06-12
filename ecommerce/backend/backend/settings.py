@@ -24,6 +24,7 @@ SECRET_KEY = 'django-insecure-5w71epif*5v72nt526uwruvi5d91*--5ww8!=#4chr%w*lt-9z
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+import os
 
 ALLOWED_HOSTS = []
 
@@ -107,7 +108,7 @@ ROOT_URLCONF = 'backend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'frontend/build')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -172,7 +173,8 @@ STATIC_URL = '/static/'
 MEDIA_URL = "/images/"
 
 STATICFILES_DIRS = [
-    BASE_DIR / "static"
+    BASE_DIR / "static", 
+    BASE_DIR / "frontend/build/static"
 ]
 
 MEDIA_ROOT = "static/images"
